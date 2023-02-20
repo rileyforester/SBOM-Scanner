@@ -1,4 +1,5 @@
 #!/bin/bash
+# error handling.  https://stackoverflow.com/a/6482403
 if [ -z "$1" ]; then
     echo "please supply a directory to scan"
     exit 1
@@ -12,13 +13,12 @@ if [ -z "$3" ]; then
     exit 1
 fi
 
-# error handling.  https://stackoverflow.com/a/6482403
 
 
+#setting needed variables for script
 target=$1
 dest=$2
 apiKey=$3
-#setting needed variables for script
 
 syft -o cyclonedx $target | \
     cyclonedx add files --input-format xml --output-format json | \
@@ -31,8 +31,7 @@ syft -o cyclonedx $target | \
 
 # 23 taking output of syft in cyclonedx format.  Target is mounted volume directory.
 # the homeassistant project is in this directory
-# 24 cyclonedx is the forrmat that dependencytrack needs.  Cyclonedx takes the output
-# from syft and changes it to json
+# 24 cyclonedx is the forrmat that dependencytrack needs.
 # 25 used jq to assemble the payload in the correct format for the dependencytrack api
 # encoding to base64 as required by Dependencytrack
 # 27 Using curl to send a PUT request to dependencytrack API
